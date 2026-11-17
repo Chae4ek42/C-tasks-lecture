@@ -43,3 +43,9 @@ ElectricBike::ElectricBike(const std::string& inventory_id,
     : Transport(inventory_id, name, simplicity), EnergyConsumer(daily_energy) {}
 
 double ElectricBike::DailyEnergy() const { return daily_energy_; }
+
+Helicopter::Helicopter(const std::string& inventory_id, const std::string& name,
+                       double daily_energy)
+    : Transport(inventory_id, name, 3), EnergyConsumer(daily_energy) {}
+
+double Helicopter::DailyEnergy() const { return daily_energy_; }

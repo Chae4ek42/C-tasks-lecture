@@ -45,12 +45,16 @@ std::unique_ptr<InventoryItem> ReadItem(std::istringstream& input) {
     item = std::make_unique<Bike>(inventory_id, name, score);
   } else if (type == "helmet") {
     item = std::make_unique<Helmet>(inventory_id, name);
-  } else if (type == "dock") {
+  } else if (type == "dock" || type == "helicopter") {
     double energy = 0.0;
     if (!(input >> energy)) {
       throw InvalidCommand("expected energy");
     }
-    item = std::make_unique<Dock>(inventory_id, name, energy);
+    if (type == "dock") {
+      item = std::make_unique<Dock>(inventory_id, name, energy);
+    } else {
+      item = std::make_unique<Helicopter>(inventory_id, name, energy);
+    }
   } else {
     throw InvalidCommand("unknown item type");
   }
@@ -76,6 +80,13 @@ bool ExecuteCommand(const std::string& line, Fleet& fleet) {
     }
     CheckEnd(input);
     fleet.PrintNovice(std::cout, minimum_score);
+  } else if (command == "closest") {
+    int score = 0;
+    if (!(input >> score)) {
+      throw InvalidCommand("expected score");
+    }
+    CheckEnd(input);
+    fleet.PrintClosest(std::cout, score);
   } else if (command == "focus" || command == "remove") {
     std::string inventory_id;
     if (!(input >> inventory_id)) {

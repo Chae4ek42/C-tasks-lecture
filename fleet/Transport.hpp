@@ -41,3 +41,11 @@ class ElectricBike : public Transport, public EnergyConsumer {
 
   double DailyEnergy() const override;
 };
+
+class Helicopter : public Transport, public EnergyConsumer {
+ public:
+  Helicopter(const std::string& inventory_id, const std::string& name,
+             double daily_energy);
+
+  double DailyEnergy() const override;
+};

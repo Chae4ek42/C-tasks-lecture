@@ -1,6 +1,7 @@
 #include "Fleet.hpp"
 
 #include <algorithm>
+#include <cstdlib>
 #include <ostream>
 #include <utility>
 #include <vector>
@@ -53,6 +54,33 @@ void Fleet::PrintNovice(std::ostream& output, int minimum_score) const {
     if (items_[i]->IsTransport() && items_[i]->Simplicity() >= minimum_score) {
       output << *items_[i] << '\n';
     }
+  }
+}
+
+void Fleet::PrintClosest(std::ostream& output, int score) const {
+  if (score < cMinScore || score > cMaxScore) {
+    throw InvalidCommand("score must be between 1 and 10");
+  }
+
+  std::shared_ptr<InventoryItem> closest;
+  int best_distance = cMaxScore;
+  for (std::size_t i = 0; i < items_.Size(); ++i) {
+    if (!items_[i]->IsTransport()) {
+      continue;
+    }
+
+    int distance = std::abs(items_[i]->Simplicity() - score);
+    if (!closest || distance < best_distance ||
+        (distance == best_distance && *items_[i] < *closest)) {
+      closest = items_[i];
+      best_distance = distance;
+    }
+  }
+
+  if (closest) {
+    output << *closest << '\n';
+  } else {
+    output << "no transport\n";
   }
 }
 

@@ -16,6 +16,7 @@ class Fleet {
   double TotalEnergy() const;
   void PrintAll(std::ostream& output) const;
   void PrintNovice(std::ostream& output, int minimum_score) const;
+  void PrintClosest(std::ostream& output, int score) const;
   void Focus(const std::string& inventory_id);
   void ShowFocus(std::ostream& output) const;
 
